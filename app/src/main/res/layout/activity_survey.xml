@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SurveyActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEncuesta"
+            android:text="NOMBRE DEL PROYECTO"
+            android:textSize="18sp"
+            android:fontFamily="@font/montsli">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNumEncuesta"
+            android:text="ENCUESTA NO:"
+            android:textSize="18sp"
+            android:fontFamily="@font/montsli">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEncuestador"
+            android:text="ENCUESTADOR:"
+            android:textSize="18sp"
+            android:layout_marginBottom="35dp"
+            android:fontFamily="@font/montsli">
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/lstPreguntas">
+            </androidx.recyclerview.widget.RecyclerView>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:gravity="center"
+                    android:layout_marginBottom="15dp">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnSiguiente"
+                        android:text="Enviar encuesta"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="#104D7F"
+                        android:fontFamily="@font/montsli">
+                    </Button>
+                </TableRow>
+            </TableLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnCancelar"
+                android:text="CANCELAR ENCUESTA"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#104D7F"
+                android:fontFamily="@font/montsli">
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/encuesta"
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:padding="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNomEncuesta"
+            android:text="NOMBRE DE LA ENCUESTA"
+            android:textSize="18sp"
+            android:fontFamily="@font/montsli">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEncuestasAp"
+            android:text="ENCUESTAS APLICADAS: "
+            android:textSize="18sp"
+            android:fontFamily="@font/montsli">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDescEncuesta"
+            android:text="DESCRIPCIÓN"
+            android:textSize="18sp"
+            android:fontFamily="@font/montsli">
+        </TextView>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnRevisar"
+                    android:layout_marginRight="15dp"
+                    android:text="REVISAR"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#104D7F"
+                    android:fontFamily="@font/montsli">
+                </Button>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnAplicar"
+                    android:text="APLICAR"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#104D7F"
+                    android:fontFamily="@font/montsli">
+                </Button>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
