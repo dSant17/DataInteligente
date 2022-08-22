@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,12 +76,12 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 for (int j = 0; j < questionList.size(); j++){
                     String numPregunta = String.valueOf(j+1);
-                    String respuesta = "";
-                    if (answersList != null && answersList.size() != 0){
-                        respuesta = answersList.get(j).toString();
-                    }
+
+                    QuestionAdapter adapter = new QuestionAdapter(SurveyActivity.this, questionList);
+                    List<Answers> respuesta = adapter.getAnswersList();
+                    String answer = respuesta.get(j).getRespuesta().toString();
+
                     String URL = "http://datainteligente.com.mx/encuestador/app/saveSurveyAnswers.php";
-                    String finalRespuesta = respuesta;
                     StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -105,7 +106,7 @@ public class SurveyActivity extends AppCompatActivity {
                             HashMap<String, String> param = new HashMap<>();
                             param.put("usuario", usuario);
                             param.put("idEncuesta", idEncuesta);
-                            param.put("respuesta", finalRespuesta);
+                            param.put("respuesta", answer);
                             param.put("numPregunta", numPregunta);
                             return param;
                         }

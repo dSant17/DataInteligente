@@ -1,8 +1,6 @@
 package com.example.datainteligente;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -18,22 +15,13 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
     private Context context;
     private List<Question> questionList;
-    private List<Answers> answersList = new ArrayList<>();
+    public static List<Answers> answersList = new ArrayList<>();
     private String idEncuesta;
     private String idUsuario;
     private String idNumEncuesta;
@@ -55,6 +43,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         return idNumEncuesta;
     }
 
+    public static void setAnswersList(List<Answers> answersList) {
+        QuestionAdapter.answersList = answersList;
+    }
+
+    public static List<Answers> getAnswersList() {
+        return answersList;
+    }
+
     @Override
     public QuestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -67,14 +63,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         String contextName = context.getClass().getSimpleName();
         if (contextName.equals("SurveyActivity")) {
             ifContextIsSurvey(holder, position);
+            setAnswers(holder, position);
         } else {
             ifContextIsInfo(holder, position);
-        };
-        String answer = setAnswers(holder, position);
-        if (!answer.equals("")){
-            answersList.add(new Answers(answer));
-            SurveyActivity respuestas = new SurveyActivity();
-            respuestas.setAnswersList(answersList);
         }
     }
 
@@ -533,70 +524,83 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         }
     }
 
-    public String setAnswers(QuestionViewHolder holder, int position) {
-        Question preguntas = questionList.get(position);
-        String respuesta = "";
-        if (preguntas.getTipo() == 1) {
-            respuesta = holder.txtAbierta.getText().toString();
-        } else if (preguntas.getTipo() == 2 || preguntas.getTipo() == 4) {
-            if (holder.opc1.isChecked()) {
-                respuesta = holder.opc1.getText().toString();
-            } else if (holder.opc2.isChecked()) {
-                respuesta = holder.opc2.getText().toString();
-            } else if (holder.opc3.isChecked()) {
-                respuesta = holder.opc3.getText().toString();
-            } else if (holder.opc4.isChecked()) {
-                respuesta = holder.opc4.getText().toString();
-            } else if (holder.opc5.isChecked()) {
-                respuesta = holder.opc5.getText().toString();
-            } else if (holder.opc6.isChecked()) {
-                respuesta = holder.opc6.getText().toString();
-            } else if (holder.opc7.isChecked()) {
-                respuesta = holder.opc7.getText().toString();
-            } else if (holder.opc8.isChecked()) {
-                respuesta = holder.opc8.getText().toString();
-            } else if (holder.opc9.isChecked()) {
-                respuesta = holder.opc9.getText().toString();
-            } else if (holder.opc10.isChecked()) {
-                respuesta = holder.opc10.getText().toString();
-            }
-        } else if (preguntas.getTipo() == 3) {
-            if (holder.op1.isChecked()) {
-                respuesta = respuesta + holder.op1.getText().toString() + "<br>";
-            } else if (holder.op2.isChecked()) {
-                respuesta = respuesta + holder.op2.getText().toString() + "<br>";
-            } else if (holder.op3.isChecked()) {
-                respuesta = respuesta + holder.op3.getText().toString() + "<br>";
-            } else if (holder.op4.isChecked()) {
-                respuesta = respuesta + holder.op4.getText().toString() + "<br>";
-            } else if (holder.op5.isChecked()) {
-                respuesta = respuesta + holder.op5.getText().toString() + "<br>";
-            } else if (holder.op6.isChecked()) {
-                respuesta = respuesta + holder.op6.getText().toString() + "<br>";
-            } else if (holder.op7.isChecked()) {
-                respuesta = respuesta + holder.op7.getText().toString() + "<br>";
-            } else if (holder.op8.isChecked()) {
-                respuesta = respuesta + holder.op8.getText().toString() + "<br>";
-            } else if (holder.op9.isChecked()) {
-                respuesta = respuesta + holder.op9.getText().toString() + "<br>";
-            } else if (holder.op10.isChecked()) {
-                respuesta = respuesta + holder.op10.getText().toString() + "<br>";
-            }
-        } else if (preguntas.getTipo() == 5) {
-            holder.btnResponder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    saveAnswersType5(holder);
+    public void setAnswers(QuestionViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Question preguntas = questionList.get(position);
+                String respuesta = "";
+                if (preguntas.getTipo() == 1) {
+                    respuesta = holder.txtAbierta.getText().toString();
+                } else if (preguntas.getTipo() == 2 || preguntas.getTipo() == 4) {
+                    if (holder.opc1.isChecked()) {
+                        respuesta = holder.opc1.getText().toString();
+                    } else if (holder.opc2.isChecked()) {
+                        respuesta = holder.opc2.getText().toString();
+                    } else if (holder.opc3.isChecked()) {
+                        respuesta = holder.opc3.getText().toString();
+                    } else if (holder.opc4.isChecked()) {
+                        respuesta = holder.opc4.getText().toString();
+                    } else if (holder.opc5.isChecked()) {
+                        respuesta = holder.opc5.getText().toString();
+                    } else if (holder.opc6.isChecked()) {
+                        respuesta = holder.opc6.getText().toString();
+                    } else if (holder.opc7.isChecked()) {
+                        respuesta = holder.opc7.getText().toString();
+                    } else if (holder.opc8.isChecked()) {
+                        respuesta = holder.opc8.getText().toString();
+                    } else if (holder.opc9.isChecked()) {
+                        respuesta = holder.opc9.getText().toString();
+                    } else if (holder.opc10.isChecked()) {
+                        respuesta = holder.opc10.getText().toString();
+                    }
+                } else if (preguntas.getTipo() == 3) {
+                    if (holder.op1.isChecked()) {
+                        respuesta = respuesta + holder.op1.getText().toString() + "<br>";
+                    } else if (holder.op2.isChecked()) {
+                        respuesta = respuesta + holder.op2.getText().toString() + "<br>";
+                    } else if (holder.op3.isChecked()) {
+                        respuesta = respuesta + holder.op3.getText().toString() + "<br>";
+                    } else if (holder.op4.isChecked()) {
+                        respuesta = respuesta + holder.op4.getText().toString() + "<br>";
+                    } else if (holder.op5.isChecked()) {
+                        respuesta = respuesta + holder.op5.getText().toString() + "<br>";
+                    } else if (holder.op6.isChecked()) {
+                        respuesta = respuesta + holder.op6.getText().toString() + "<br>";
+                    } else if (holder.op7.isChecked()) {
+                        respuesta = respuesta + holder.op7.getText().toString() + "<br>";
+                    } else if (holder.op8.isChecked()) {
+                        respuesta = respuesta + holder.op8.getText().toString() + "<br>";
+                    } else if (holder.op9.isChecked()) {
+                        respuesta = respuesta + holder.op9.getText().toString() + "<br>";
+                    } else if (holder.op10.isChecked()) {
+                        respuesta = respuesta + holder.op10.getText().toString() + "<br>";
+                    }
+                } else if (preguntas.getTipo() == 5) {
+                    holder.btnResponder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String respuesta = saveAnswersType5(holder);
+                            holder.answer.setText(respuesta);
+                        }
+                    });
+                    holder.btnReiniciar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String respuesta = resetQuestionType5(holder);
+                            holder.answer.setText(respuesta);
+                        }
+                    });
                 }
-            });
-            holder.btnReiniciar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    resetQuestionType5(holder);
+                holder.answer.setText(respuesta);
+                String resp = holder.answer.getText().toString();
+                if (!resp.equals("")){
+                    Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
+                    answersList.add(new Answers(resp));
+                    setAnswersList(answersList);
                 }
-            });
-        }
-        return respuesta;
+            }
+        });
     }
 
     public String saveAnswersType5(QuestionViewHolder holder) {
@@ -655,7 +659,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     }
 
     public String resetQuestionType5(QuestionViewHolder holder){
-        String respuesta = "";
+        String respuesta = "RESPUESTA";
         holder.opc1.setEnabled(true);
         holder.opc2.setEnabled(true);
         holder.opc3.setEnabled(true);
@@ -676,6 +680,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         RadioButton opc1, opc2, opc3, opc4, opc5, opc6, opc7, opc8, opc9, opc10;
         CheckBox op1, op2, op3, op4, op5, op6, op7, op8, op9, op10;
         Button btnResponder, btnReiniciar;
+        TextView answer;
 
         public QuestionViewHolder(View itemView) {
             super(itemView);
@@ -705,6 +710,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             op10 = itemView.findViewById(R.id.op10);
             btnResponder = itemView.findViewById(R.id.btnResponder);
             btnReiniciar = itemView.findViewById(R.id.btnReiniciar);
+            answer = itemView.findViewById(R.id.respuesta);
         }
     }
 }
